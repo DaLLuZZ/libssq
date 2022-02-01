@@ -30,7 +30,7 @@ If you just want to get started right away, click [here](https://github.com/Bina
 
 This library is meant to be built using [CMake](https://cmake.org/).
 
-## Example
+### Example
 
 Here is an example of how you would build the library from the root of the repository:
 

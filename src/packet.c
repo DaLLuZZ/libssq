@@ -45,7 +45,10 @@ static void ssq_packet_init_multi(
     packet->number = ssq_buf_read_uint8(buf);
     packet->size   = ssq_buf_read_uint16(buf);
 
-    ssq_packet_init_payload(packet, buf, err);
+    if (packet->id & 0x80000000)
+        ssq_error_set(err, SSQ_ERR_UNSUPPORTED, "Packet decompression is not supported");
+    else
+        ssq_packet_init_payload(packet, buf, err);
 }
 
 struct ssq_packet *ssq_packet_init(
@@ -106,7 +109,7 @@ char *ssq_packet_mergepayloads(
 {
     *size = ssq_packet_gettotalsize(packets, packet_count);
 
-    char *const merged = calloc(*size, sizeof (*merged));
+    char *merged = calloc(*size, sizeof (*merged));
 
     if (merged != NULL)
     {
@@ -114,8 +117,20 @@ char *ssq_packet_mergepayloads(
 
         for (uint8_t i = 0; i < packet_count; ++i)
         {
-            memcpy(merged + offset, packets[i]->payload, packets[i]->size);
-            offset += packets[i]->size;
+            if (packets[i]->id != packets[0]->id)
+            {
+                ssq_error_set(err, SSQ_ERR_BADRES, "Packet IDs mismatch");
+
+                free(merged);
+                merged = NULL;
+
+                break;
+            }
+            else
+            {
+                memcpy(merged + offset, packets[i]->payload, packets[i]->size);
+                offset += packets[i]->size;
+            }
         }
     }
     else

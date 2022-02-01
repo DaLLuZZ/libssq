@@ -10,9 +10,10 @@ extern "C"
 
 enum ssq_error_code
 {
-    SSQ_OK,        /* no error     */
-    SSQ_ERR_SYS,   /* system error */
-    SSQ_ERR_BADRES /* bad response */
+    SSQ_OK,             /* no error     */
+    SSQ_ERR_SYS,        /* system error */
+    SSQ_ERR_BADRES,     /* bad response */
+    SSQ_ERR_UNSUPPORTED /* unsupported feature */
 };
 
 struct ssq_error

@@ -6,7 +6,7 @@ if (UNIX)
     add_definitions(-D_POSIX_C_SOURCE=200112L)
 endif (UNIX)
 
-project(ssq)
+project(ssq VERSION 0.0.0)
 
 add_library(ssq STATIC
     src/buffer.c

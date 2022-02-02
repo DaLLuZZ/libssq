@@ -24,9 +24,7 @@ struct ssq_querier *ssq_init(void)
     if (querier == NULL)
         return NULL;
 
-    querier->addr_list = NULL;
-    ssq_errclr(querier);
-    ssq_set_timeout(querier, SSQ_TIMEOUT_RECV | SSQ_TIMEOUT_SEND, 0);
+    memset(querier, 0, sizeof (*querier));
 
     return querier;
 }
@@ -191,7 +189,7 @@ static SOCKET ssq_query_socket(struct ssq_querier *const querier, struct addrinf
  * Processes a packet and stores it in an ordered packet array.
  * @param payload the raw packet's payload
  * @param size the raw packet's payload size
- * @param packets address of the dynamically-allocated packets array
+ * @param packets address of the heap-allocated packets array
  * @param packet_count where to store the packet count
  * @param err where to report potential errors
  */
@@ -207,7 +205,8 @@ static void ssq_query_recv_packet(
     if (err->code != SSQ_OK)
         return;
 
-    if (*packets == NULL) // no packets received yet
+    // no packets received yet
+    if (*packets == NULL)
     {
         // update the packet count in case of a multi-packet response
         *packet_count = packet->total;
@@ -222,7 +221,7 @@ static void ssq_query_recv_packet(
 }
 
 /**
- * Receives packets from a UDP socket.
+ * Receives packets from a socket.
  * @param sockfd the socket file descriptor
  * @param packet_count where to store the packet count
  * @param err where to report potential errors
@@ -254,7 +253,7 @@ static struct ssq_packet **ssq_query_recv(
         {
             ssq_query_recv_packet(payload, bytes_received, &packets, packet_count, err);
         }
-        else // recvfrom failure
+        else
         {
 #ifdef _WIN32
             ssq_error_set_wsa(err);

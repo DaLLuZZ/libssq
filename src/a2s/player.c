@@ -64,7 +64,11 @@ static struct a2s_player *ssq_player_deserialize(
     return players;
 }
 
-void ssq_player_handlechall(struct ssq_querier *const querier, char **const response, size_t *const response_len)
+void ssq_player_handlechall(
+    struct ssq_querier *const querier,
+    char              **const response,
+    size_t             *const response_len
+)
 {
     while (ssq_ok(querier) && ssq_utils_response_haschall(*response))
     {

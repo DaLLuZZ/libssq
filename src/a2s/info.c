@@ -32,10 +32,11 @@ static struct a2s_info *ssq_info_deserialize(
     if (header == S2A_INFO)
     {
         info = malloc(sizeof (*info));
-        memset(info, 0, sizeof (*info));
 
         if (info != NULL)
         {
+            memset(info, 0, sizeof (*info));
+
             info->protocol    = ssq_buf_read_uint8(&buf);
             info->name        = ssq_buf_read_string(&buf);
             info->map         = ssq_buf_read_string(&buf);
@@ -119,7 +120,11 @@ static struct a2s_info *ssq_info_deserialize(
     return info;
 }
 
-static void ssq_info_handlechall(struct ssq_querier *const querier, char **const response, size_t *const response_len)
+static void ssq_info_handlechall(
+    struct ssq_querier *const querier,
+    char              **const response,
+    size_t             *const response_len
+)
 {
     while (ssq_ok(querier) && ssq_utils_response_haschall(*response))
     {

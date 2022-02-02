@@ -60,7 +60,11 @@ struct a2s_rules *ssq_rules_deserialize(
     return rules;
 }
 
-void ssq_rules_handlechall(struct ssq_querier *const querier, char **const response, size_t *const response_len)
+void ssq_rules_handlechall(
+    struct ssq_querier *const querier,
+    char              **const response,
+    size_t             *const response_len
+)
 {
     while (ssq_ok(querier) && ssq_utils_response_haschall(*response))
     {
@@ -83,6 +87,9 @@ struct a2s_rules *ssq_rules(
     char *response = ssq_query(querier, PAYLOAD, PAYLOAD_LEN, &response_len);
 
     ssq_rules_handlechall(querier, &response, &response_len);
+
+    if (!ssq_ok(querier))
+        return NULL;
 
     struct a2s_rules *const rules = ssq_rules_deserialize(response, response_len, rule_count, &(querier->err));
 

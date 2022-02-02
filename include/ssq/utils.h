@@ -12,12 +12,13 @@
 #define S2A_CHALL 0x41
 
 /**
- * Checks if the response's has a challenge.
+ * Checks if the response has a challenge.
  * @returns true if the response's header is S2A_CHALL
  */
 static inline bool ssq_utils_response_haschall(const char response[])
 {
-    return ((uint8_t) response[0] == S2A_CHALL);
+    const uint8_t header = response[0];
+    return (header == S2A_CHALL);
 }
 
 /**
@@ -57,18 +58,20 @@ static inline void ssq_utils_porttostr(const uint16_t port, char buf[6])
 }
 
 #ifndef _WIN32
-# include <sys/time.h>
+
+#include <sys/time.h>
 
 /**
  * Converts a timeout in milliseconds to a timeval.
  * @param timeout the timeout value in milliseconds
  * @param tv the output timeval
  */
-static inline void ssq_utils_mstotv(const long timeout, struct timeval *const tv)
+static inline void ssq_utils_mstotv(const time_t timeout, struct timeval *const tv)
 {
     tv->tv_sec  = timeout / 1000;
     tv->tv_usec = timeout % 1000 * 1000;
 }
+
 #endif
 
 #endif /* SSQ_UTILS_H */

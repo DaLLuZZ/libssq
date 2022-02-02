@@ -16,12 +16,12 @@ extern "C"
 
 struct ssq_packet
 {
-    int32_t  header;  /** The packet's header */
-    int32_t  id;      /** Unique number assigned by server per answer */
-    uint8_t  total;   /** The total number of packets in the response */
-    uint8_t  number;  /** The number of the packet */
-    size_t   size;    /** The size of the payload */
-    char    *payload; /** The packet's payload */
+    int32_t header;  /** The packet's header */
+    int32_t id;      /** Unique number assigned by server per answer */
+    uint8_t total;   /** The total number of packets in the response */
+    uint8_t number;  /** The number of the packet */
+    size_t  size;    /** The size of the payload */
+    char   *payload; /** The packet's payload */
 };
 
 /**
@@ -30,11 +30,7 @@ struct ssq_packet
  * @param size number of bytes in the raw packet data
  * @param err struct where to report potential errors
  */
-struct ssq_packet *ssq_packet_init(
-    const char           data[],
-    uint16_t             size,
-    struct ssq_error    *err
-);
+struct ssq_packet *ssq_packet_init(const char data[], uint16_t size, struct ssq_error *err);
 
 /**
  * Merges the payloads of many packets into a single response.
@@ -44,12 +40,7 @@ struct ssq_packet *ssq_packet_init(
  * @param err where to report potential errors
  * @returns a dynamically-allocated concatenation of the packets' payloads
  */
-char *ssq_packet_mergepayloads(
-    struct ssq_packet *const *packets,
-    uint8_t                    count,
-    size_t                    *size,
-    struct ssq_error          *err
-);
+char *ssq_packet_mergepayloads(struct ssq_packet *const *packets, uint8_t count, size_t *size, struct ssq_error *err);
 
 /**
  * Frees a packet.

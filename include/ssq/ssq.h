@@ -27,14 +27,14 @@ enum ssq_timeout
 
 struct ssq_querier
 {
-    struct addrinfo  *addr_list;
-    struct ssq_error  err;
+    struct addrinfo *addr_list;
+    struct ssq_error err;
 #ifdef _WIN32
-    DWORD             timeout_recv;
-    DWORD             timeout_send;
+    DWORD            timeout_recv;
+    DWORD            timeout_send;
 #else
-    struct timeval    timeout_recv;
-    struct timeval    timeout_send;
+    struct timeval   timeout_recv;
+    struct timeval   timeout_send;
 #endif
 };
 
@@ -69,10 +69,10 @@ void ssq_set_timeout(
 );
 
 /**
- * Gets the latest error code of a Source server querier.
+ * Gets the last error code of a Source server querier.
  * Stands for SSQ ERRor Code.
  * @param querier the Source server querier
- * @returns the latest error code of the Source server querier
+ * @returns the last error code of the Source server querier
  */
 enum ssq_error_code ssq_errc(const struct ssq_querier *querier);
 
@@ -84,10 +84,10 @@ enum ssq_error_code ssq_errc(const struct ssq_querier *querier);
 bool ssq_ok(const struct ssq_querier *querier);
 
 /**
- * Gets the latest error message of a Source server querier.
+ * Gets the last error message of a Source server querier.
  * Stands for SSQ ERRor Message.
  * @param querier the Source server querier
- * @returns the latest error message of the Source server querier
+ * @returns the last error message of the Source server querier
  */
 const char *ssq_errm(const struct ssq_querier *querier);
 
